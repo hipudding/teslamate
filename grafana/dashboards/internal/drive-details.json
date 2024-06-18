@@ -612,9 +612,11 @@
       "maxDataPoints": 50000,
       "options": {
         "basemap": {
-          "config": {},
+          "config": {
+	    "url":"http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=7"
+	  },
           "name": "Layer 0",
-          "type": "osm-standard"
+          "type": "xyz"
         },
         "controls": {
           "mouseWheelZoom": true,
@@ -705,7 +707,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(date),\n  latitude,\n  longitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
+          "rawSql": "SELECT\n\t$__time(date),\n\t(wgs84_to_gcj02(latitude, longitude)).gcjLat AS latitude,\n\t(wgs84_to_gcj02(latitude, longitude)).gcjLon AS longitude\nFROM\n\tpositions\nWHERE\n\tcar_id = $car_id AND \n\t$__timeFilter(date)\nORDER BY \n\tdate ASC;",
           "refId": "A",
           "select": [
             [

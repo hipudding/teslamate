@@ -129,10 +129,10 @@
       "options": {
         "basemap": {
           "config": {
-            "server": "streets"
+            "url": "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=7"
           },
           "name": "Layer 0",
-          "type": "esri-xyz"
+          "type": "xyz"
         },
         "controls": {
           "mouseWheelZoom": true,
@@ -212,7 +212,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('minute', date) as time,\n  avg(latitude) as latitude,\n  avg(longitude) as longitude\nFROM\n  positions\nWHERE\n  car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1",
+          "rawSql": "WITH converted_positions AS (\n\tSELECT\n\t\tdate_trunc('minute', date) as time,\n\t\t(wgs84_to_gcj02(latitude, longitude)).gcjLat AS latitude,\n\t\t(wgs84_to_gcj02(latitude, longitude)).gcjLon AS longitude\n\tFROM\n\t\tpositions\n\tWHERE\n\t\tcar_id = $car_id AND $__timeFilter(date)\n)\nSELECT\n\ttime,\n\tavg(latitude) as latitude,\n\tavg(longitude) as longitude\nFROM\n\tconverted_positions\nGROUP BY\n\ttime\nORDER BY\n\ttime;",
           "refId": "Positions",
           "sql": {
             "columns": [
