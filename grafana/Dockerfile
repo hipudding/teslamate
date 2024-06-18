@@ -15,6 +15,9 @@ ENV GF_ANALYTICS_REPORTING_ENABLED=false \
     DATABASE_PORT=5432 \
     DATABASE_SSL_MODE=disable
 
+USER root
+RUN apk update && apk add --no-cache postgresql-client
+
 USER grafana
 
 COPY logo.svg /usr/share/grafana/public/img/grafana_icon.svg
@@ -26,5 +29,9 @@ COPY dashboards.yml /etc/grafana/provisioning/dashboards/
 COPY dashboards/internal/*.json /dashboards_internal/
 COPY dashboards/reports/*.json /dashboards_reports/
 COPY dashboards/*.json /dashboards/
+COPY proc.sql /proc.sql
+COPY run_init_sql.sh /run_init_sql.sh
+
+ENTRYPOINT ["bash", "/run_init_sql.sh"]
 
 EXPOSE 3000
