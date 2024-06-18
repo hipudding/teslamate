@@ -914,9 +914,11 @@
       "maxDataPoints": 500,
       "options": {
         "basemap": {
-          "config": {},
+          "config": {
+	    "url":"https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
+	  },
           "name": "Layer 0",
-          "type": "osm-standard"
+          "type": "xyz"
         },
         "controls": {
           "mouseWheelZoom": true,
@@ -998,7 +1000,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT\n\t$__time(date),\n\tunnest(ARRAY[latitude, latitude]) AS latitude,\n\tunnest(ARRAY[longitude, longitude]) AS longitude\nFROM\n\tcharging_processes c\n\tJOIN positions p ON c.position_id = p.id\nWHERE\n\t$__timeFilter(date)\n\tAND c.car_id = $car_id;",
+          "rawSql": "SELECT\n\t$__time(date),\n\tunnest(ARRAY[(wgs84_to_gcj02(p.latitude, p.longitude)).gcjLat, (wgs84_to_gcj02(p.latitude, p.longitude)).gcjLat]) AS latitude,\n\tunnest(ARRAY[(wgs84_to_gcj02(p.latitude, p.longitude)).gcjLon, (wgs84_to_gcj02(p.latitude, p.longitude)).gcjLon]) AS longitude\nFROM\n\tcharging_processes c\n\tJOIN positions p ON c.position_id = p.id\nWHERE\n\t$__timeFilter(date)\n\tAND c.car_id = $car_id;",
           "refId": "A",
           "sql": {
             "columns": [
