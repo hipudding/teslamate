@@ -91,9 +91,11 @@
       "maxDataPoints": 10000000,
       "options": {
         "basemap": {
-          "config": {},
+          "config": {
+            "url": "https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
+          },
           "name": "Layer 0",
-          "type": "osm-standard"
+          "type": "xyz"
         },
         "controls": {
           "mouseWheelZoom": true,
@@ -172,7 +174,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('minute', timezone('UTC', date), '$__timezone') as time,\n  avg(latitude) as latitude,\n  avg(longitude) as longitude\nFROM\n  positions\nWHERE\n  car_id = $car_id AND $__timeFilter(date) and ideal_battery_range_km is not null\nGROUP BY 1\nORDER BY 1",
+	  "rawSql": "WITH converted_positions AS (\n\tSELECT\n\t\tdate_trunc('minute', timezone('UTC', date), '$__timezone') as time,\n\t\t(wgs84_to_gcj02(latitude, longitude)).gcjLat AS latitude,\n\t\t(wgs84_to_gcj02(latitude, longitude)).gcjLon AS longitude\n\tFROM\n\t\tpositions\n\tWHERE\n\t\tcar_id = $car_id AND $__timeFilter(date)  and ideal_battery_range_km is not null\n)\nSELECT\n\ttime,\n\tavg(latitude) as latitude,\n\tavg(longitude) as longitude\nFROM\n\tconverted_positions\nGROUP BY\n\ttime\nORDER BY\n\ttime;",
           "refId": "Positions",
           "sql": {
             "columns": [
