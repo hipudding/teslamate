@@ -100,9 +100,11 @@
       "maxDataPoints": 500,
       "options": {
         "basemap": {
-          "config": {},
+          "config": {
+	    "url":"https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
+	  },
           "name": "Layer 0",
-          "type": "osm-standard"
+          "type": "xyz"
         },
         "controls": {
           "mouseWheelZoom": true,
@@ -177,7 +179,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "with unioned_positions as (\n\n    -- fetch all positions based on start_date of drives so the map aligns with data shown in other panels\n    select p.*\n    from positions p\n             inner join drives d on p.drive_id = d.id\n    where p.car_id = $car_id and $__timeFilter(d.start_date)\n\n    union all\n\n    -- get all positions logged while not driving\n    select *\n    from positions p\n    where p.car_id = $car_id and drive_id is null and $__timeFilter(date))\n\nSELECT $__timeGroup(date, '5s')                AS time,\n       avg(latitude)                           AS latitude,\n       avg(longitude)                          AS longitude\nfrom unioned_positions\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "with unioned_positions as (\n\n    -- fetch all positions based on start_date of drives so the map aligns with data shown in other panels\n    select p.*\n    from positions p\n             inner join drives d on p.drive_id = d.id\n    where p.car_id = $car_id and $__timeFilter(d.start_date)\n\n    union all\n\n    -- get all positions logged while not driving\n    select *\n    from positions p\n    where p.car_id = $car_id and drive_id is null and $__timeFilter(date)),\nconverted_positions as (\n    SELECT date,\n           (wgs84_to_gcj02(latitude, longitude)).gcjLat AS latitude,\n           (wgs84_to_gcj02(latitude, longitude)).gcjLon AS longitude\n    FROM unioned_positions\n)\n\nSELECT $__timeGroup(date, '5s')                AS time,\n       avg(latitude)                           AS latitude,\n       avg(longitude)                          AS longitude\nfrom converted_positions\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "sql": {
             "columns": [
