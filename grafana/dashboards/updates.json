@@ -163,7 +163,7 @@
           }
         }
       ],
-      "title": "Updates",
+      "title": "更新次数",
       "type": "stat"
     },
     {
@@ -246,7 +246,7 @@
           }
         }
       ],
-      "title": "Median time between updates",
+      "title": "更新间隔周期",
       "type": "stat"
     },
     {
@@ -292,7 +292,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Date"
+                "value": "日期"
               },
               {
                 "id": "unit",
@@ -312,7 +312,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Duration"
+                "value": "持续时长"
               },
               {
                 "id": "unit",
@@ -332,7 +332,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Since Previous Update"
+                "value": "自上次更新以来"
               },
               {
                 "id": "unit",
@@ -348,7 +348,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Installed Version"
+                "value": "安装版本"
               },
               {
                 "id": "custom.align",
@@ -386,7 +386,7 @@
               },
               {
                 "id": "displayName",
-                "value": "# of Charges"
+                "value": "充电次数"
               }
             ]
           },
@@ -434,7 +434,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Avg rated range"
+                "value": "平均额定里程"
               }
             ]
           },
@@ -783,7 +783,7 @@
     ]
   },
   "timezone": "",
-  "title": "Updates",
+  "title": "更新情况",
   "uid": "IiC07mgWz",
   "version": 1,
   "weekStart": ""

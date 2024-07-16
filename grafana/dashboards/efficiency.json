@@ -214,7 +214,7 @@
           ]
         }
       ],
-      "title": "Consumption (net)",
+      "title": "净平均能效",
       "type": "stat"
     },
     {
@@ -328,7 +328,7 @@
           ]
         }
       ],
-      "title": "Consumption (gross) ",
+      "title": "总平均能效",
       "type": "stat"
     },
     {
@@ -442,7 +442,7 @@
           ]
         }
       ],
-      "title": "Logged Distance",
+      "title": "记录里程",
       "type": "stat"
     },
     {
@@ -481,7 +481,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Temperature"
+                "value": "温度"
               },
               {
                 "id": "unit",
@@ -521,7 +521,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "能效"
               },
               {
                 "id": "unit",
@@ -572,7 +572,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Consumption"
+                "value": "消耗量"
               },
               {
                 "id": "unit",
@@ -612,7 +612,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "$length_unit"
+                "value": "行驶里程"
               },
               {
                 "id": "unit",
@@ -652,7 +652,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Speed"
+                "value": "平均车速"
               },
               {
                 "id": "unit",
@@ -746,7 +746,7 @@
           ]
         }
       ],
-      "title": "Temperature – Efficiency",
+      "title": "温度 – 能效",
       "type": "table"
     },
     {
@@ -860,7 +860,7 @@
           ]
         }
       ],
-      "title": "Current $preferred_range efficiency",
+      "title": "当前能效",
       "type": "stat"
     },
     {
@@ -877,6 +877,7 @@
             "filterable": false,
             "inspect": false
           },
+          "displayName": "次数",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -897,7 +898,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "能效"
               },
               {
                 "id": "unit",
@@ -918,6 +919,18 @@
               {
                 "id": "unit",
                 "value": "Wh/mi"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "能效"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 341
               }
             ]
           }
@@ -977,7 +990,7 @@
           ]
         }
       ],
-      "title": "Derived ideal efficiencies",
+      "title": "理想能效统计",
       "type": "table"
     },
     {
@@ -994,6 +1007,7 @@
             "filterable": false,
             "inspect": false
           },
+          "displayName": "次数",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1018,7 +1032,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "能效"
               }
             ]
           },
@@ -1094,7 +1108,7 @@
           ]
         }
       ],
-      "title": "Derived rated efficiencies",
+      "title": "额定能效统计",
       "type": "table"
     }
   ],
@@ -1295,7 +1309,7 @@
     ]
   },
   "timezone": "",
-  "title": "Efficiency",
+  "title": "能效",
   "uid": "fu4SiQgWz",
   "version": 2,
   "weekStart": ""

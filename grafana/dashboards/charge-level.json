@@ -93,7 +93,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Charge Level",
+            "axisLabel": "电池电量 [%]",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -137,7 +137,32 @@
           },
           "unit": "percent"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Battery Level"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "电池电量"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Usable Battery Level"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "可用电量"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 21,
@@ -227,7 +252,7 @@
           }
         }
       ],
-      "title": "Charge Level",
+      "title": "电量曲线图",
       "transformations": [
         {
           "id": "configFromData",
@@ -349,7 +374,7 @@
     ]
   },
   "timezone": "",
-  "title": "Charge Level",
+  "title": "电量曲线图",
   "uid": "WopVO_mgz",
   "version": 2,
   "weekStart": ""

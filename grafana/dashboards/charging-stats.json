@@ -201,7 +201,7 @@
           }
         }
       ],
-      "title": "Number of Charges",
+      "title": "充电次数",
       "type": "stat"
     },
     {
@@ -227,8 +227,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 5,
+        "w": 4,
+        "x": 4,
         "y": 1
       },
       "id": 10,
@@ -289,7 +289,7 @@
           }
         }
       ],
-      "title": "Charged in total",
+      "title": "总充电量",
       "type": "stat"
     },
     {
@@ -317,7 +317,7 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 10,
+        "x": 8,
         "y": 1
       },
       "id": 14,
@@ -405,8 +405,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 3,
-        "x": 13,
+        "w": 4,
+        "x": 11,
         "y": 1
       },
       "id": 27,
@@ -467,7 +467,7 @@
           }
         }
       ],
-      "title": "Total Charging Cost",
+      "title": "总费用",
       "type": "stat"
     },
     {
@@ -494,8 +494,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 2,
-        "x": 16,
+        "w": 3,
+        "x": 15,
         "y": 1
       },
       "id": 26,
@@ -550,7 +550,7 @@
           }
         }
       ],
-      "title": "Cost per 100 $length_unit",
+      "title": "每 100 $length_unit费用",
       "type": "stat"
     },
     {
@@ -625,7 +625,7 @@
           }
         }
       ],
-      "title": "Average Cost per kWh",
+      "title": "平均电价",
       "type": "stat"
     },
     {
@@ -718,7 +718,7 @@
           ]
         }
       ],
-      "title": "DC Avg Cost per kWh",
+      "title": "平均电价[DC]",
       "type": "stat"
     },
     {
@@ -811,7 +811,7 @@
           ]
         }
       ],
-      "title": "AC Avg Cost per kWh",
+      "title": "平均电价[AC]",
       "type": "stat"
     },
     {
@@ -940,7 +940,7 @@
         }
       ],
       "timeFrom": "6M",
-      "title": "Charge Heatmap",
+      "title": "充电热图",
       "tooltip": {
         "show": true,
         "showHistogram": false
@@ -1028,6 +1028,10 @@
               {
                 "id": "custom.fillBelowTo",
                 "value": "End SOC"
+              },
+              {
+                "id": "displayName",
+                "value": "开始SOC值"
               }
             ]
           },
@@ -1051,6 +1055,10 @@
               {
                 "id": "custom.lineWidth",
                 "value": 0
+              },
+              {
+                "id": "displayName",
+                "value": "结束SOC值"
               }
             ]
           }
@@ -1141,7 +1149,7 @@
         }
       ],
       "timeFrom": "6M",
-      "title": "Charge Delta",
+      "title": "充电起止",
       "transformations": [
         {
           "id": "configFromData",
@@ -1210,6 +1218,10 @@
                   "fixedColor": "#73BF69",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "交流"
               }
             ]
           },
@@ -1225,6 +1237,10 @@
                   "fixedColor": "#FADE2A",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "直流"
               }
             ]
           }
@@ -1300,7 +1316,7 @@
           }
         }
       ],
-      "title": "AC/DC - kWh",
+      "title": "直流/交流充电量",
       "type": "piechart"
     },
     {
@@ -1499,7 +1515,7 @@
           ]
         }
       ],
-      "title": "Charging heat map by kWh",
+      "title": "充电热图 (kWh)",
       "type": "geomap"
     },
     {
@@ -1536,6 +1552,10 @@
                   "fixedColor": "#73BF69",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "交流"
               }
             ]
           },
@@ -1551,6 +1571,10 @@
                   "fixedColor": "#FADE2A",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "直流"
               }
             ]
           }
@@ -1626,7 +1650,7 @@
           }
         }
       ],
-      "title": "AC/DC - Duration",
+      "title": "直流/交流充电累计用时",
       "type": "piechart"
     },
     {
@@ -1690,6 +1714,66 @@
                     "url": "d/BHhxFeZRz?from=${__data.fields.start_date.numeric}&to=${__data.fields.end_date.numeric}&var-car_id=${car_id}&var-charging_process_id=${__data.fields.charging_process_id.numeric}"
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Power [kW]"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "功率[kW]"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "charging_process_id"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "充电顺序"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "start_date"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "开始时间"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "end_date"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "结束时间"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Charge"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "充电地点"
               }
             ]
           }
@@ -1829,7 +1913,7 @@
           ]
         }
       ],
-      "title": "DC Charging Curve",
+      "title": "直流充电曲线",
       "type": "xychart"
     },
     {
@@ -1892,7 +1976,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "# of Charges"
+                "value": "完成次数"
               },
               {
                 "id": "custom.cellOptions",
@@ -1913,8 +1997,8 @@
         ]
       },
       "gridPos": {
-        "h": 18,
-        "w": 3,
+        "h": 15,
+        "w": 4,
         "x": 0,
         "y": 39
       },
@@ -1994,7 +2078,7 @@
           }
         }
       ],
-      "title": "Charge Stats",
+      "title": "充电完成统计",
       "transformations": [
         {
           "id": "configFromData",
@@ -2108,7 +2192,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "# of Discharges"
+                "value": "开始次数"
               },
               {
                 "id": "custom.cellOptions",
@@ -2126,9 +2210,9 @@
         ]
       },
       "gridPos": {
-        "h": 18,
-        "w": 3,
-        "x": 3,
+        "h": 15,
+        "w": 4,
+        "x": 4,
         "y": 39
       },
       "id": 13,
@@ -2178,7 +2262,7 @@
           }
         }
       ],
-      "title": "Discharge Stats",
+      "title": "充电开始次数",
       "type": "table"
     },
     {
@@ -2219,7 +2303,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "地点"
               }
             ]
           },
@@ -2231,7 +2315,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Charged"
+                "value": "充电量"
               },
               {
                 "id": "custom.width",
@@ -2242,13 +2326,37 @@
                 "value": "left"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "地点"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 372
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "充电量"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 105
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 18,
-        "w": 9,
-        "x": 6,
+        "h": 15,
+        "w": 8,
+        "x": 8,
         "y": 39
       },
       "id": 4,
@@ -2297,7 +2405,7 @@
           }
         }
       ],
-      "title": "Top Charging Stations (Charged)",
+      "title": "充电站排名[充电量]",
       "type": "table"
     },
     {
@@ -2338,7 +2446,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "地点"
               }
             ]
           },
@@ -2350,7 +2458,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Cost"
+                "value": "费用"
               },
               {
                 "id": "custom.width",
@@ -2365,13 +2473,25 @@
                 "value": "left"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "地点"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 368
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 18,
-        "w": 9,
-        "x": 15,
+        "h": 15,
+        "w": 8,
+        "x": 16,
         "y": 39
       },
       "id": 6,
@@ -2422,7 +2542,7 @@
           }
         }
       ],
-      "title": "Top Charging Stations (Cost)",
+      "title": "充电站排名[费用]",
       "type": "table"
     }
   ],
@@ -2504,7 +2624,7 @@
     ]
   },
   "time": {
-    "from": "now-10y",
+    "from": "now-1y",
     "to": "now"
   },
   "timeRangeUpdatedDuringEditOrView": false,
@@ -2535,7 +2655,7 @@
     ]
   },
   "timezone": "",
-  "title": "Charging Stats",
+  "title": "充电统计（汇总）",
   "uid": "-pkIkhmRz",
   "version": 5,
   "weekStart": ""
