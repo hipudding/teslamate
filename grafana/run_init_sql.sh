@@ -10,4 +10,5 @@ done
 PGPASSWORD=$DATABASE_PASS psql -h "$DATABASE_HOST" -U "$DATABASE_USER" -d "teslamate" -f /proc.sql
 
 # 启动Grafana
+# 测试打包
 /run.sh
