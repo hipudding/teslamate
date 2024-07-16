@@ -93,7 +93,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "µç³ØµçÁ¿ [%]",
+            "axisLabel": "ç”µæ± ç”µé‡ [%]",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -146,7 +146,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "µç³ØµçÁ¿"
+                "value": "ç”µæ± ç”µé‡"
               }
             ]
           },
@@ -158,7 +158,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "¿ÉÓÃµçÁ¿"
+                "value": "å¯ç”¨ç”µé‡"
               }
             ]
           }
@@ -252,7 +252,7 @@
           }
         }
       ],
-      "title": "µçÁ¿ÇúÏßÍ¼",
+      "title": "ç”µé‡æ›²çº¿å›¾",
       "transformations": [
         {
           "id": "configFromData",
@@ -374,7 +374,7 @@
     ]
   },
   "timezone": "",
-  "title": "µçÁ¿ÇúÏßÍ¼",
+  "title": "ç”µé‡æ›²çº¿å›¾",
   "uid": "WopVO_mgz",
   "version": 2,
   "weekStart": ""

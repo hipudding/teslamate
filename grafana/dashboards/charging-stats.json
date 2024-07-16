@@ -201,7 +201,7 @@
           }
         }
       ],
-      "title": "³äµç´ÎÊı",
+      "title": "å……ç”µæ¬¡æ•°",
       "type": "stat"
     },
     {
@@ -289,7 +289,7 @@
           }
         }
       ],
-      "title": "×Ü³äµçÁ¿",
+      "title": "æ€»å……ç”µé‡",
       "type": "stat"
     },
     {
@@ -467,7 +467,7 @@
           }
         }
       ],
-      "title": "×Ü·ÑÓÃ",
+      "title": "æ€»è´¹ç”¨",
       "type": "stat"
     },
     {
@@ -550,7 +550,7 @@
           }
         }
       ],
-      "title": "Ã¿ 100 $length_unit·ÑÓÃ",
+      "title": "æ¯ 100 $length_unitè´¹ç”¨",
       "type": "stat"
     },
     {
@@ -625,7 +625,7 @@
           }
         }
       ],
-      "title": "Æ½¾ùµç¼Û",
+      "title": "å¹³å‡ç”µä»·",
       "type": "stat"
     },
     {
@@ -718,7 +718,7 @@
           ]
         }
       ],
-      "title": "Æ½¾ùµç¼Û[DC]",
+      "title": "å¹³å‡ç”µä»·[DC]",
       "type": "stat"
     },
     {
@@ -811,7 +811,7 @@
           ]
         }
       ],
-      "title": "Æ½¾ùµç¼Û[AC]",
+      "title": "å¹³å‡ç”µä»·[AC]",
       "type": "stat"
     },
     {
@@ -940,7 +940,7 @@
         }
       ],
       "timeFrom": "6M",
-      "title": "³äµçÈÈÍ¼",
+      "title": "å……ç”µçƒ­å›¾",
       "tooltip": {
         "show": true,
         "showHistogram": false
@@ -1031,7 +1031,7 @@
               },
               {
                 "id": "displayName",
-                "value": "¿ªÊ¼SOCÖµ"
+                "value": "å¼€å§‹SOCå€¼"
               }
             ]
           },
@@ -1058,7 +1058,7 @@
               },
               {
                 "id": "displayName",
-                "value": "½áÊøSOCÖµ"
+                "value": "ç»“æŸSOCå€¼"
               }
             ]
           }
@@ -1149,7 +1149,7 @@
         }
       ],
       "timeFrom": "6M",
-      "title": "³äµçÆğÖ¹",
+      "title": "å……ç”µèµ·æ­¢",
       "transformations": [
         {
           "id": "configFromData",
@@ -1221,7 +1221,7 @@
               },
               {
                 "id": "displayName",
-                "value": "½»Á÷"
+                "value": "äº¤æµ"
               }
             ]
           },
@@ -1240,7 +1240,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Ö±Á÷"
+                "value": "ç›´æµ"
               }
             ]
           }
@@ -1316,7 +1316,7 @@
           }
         }
       ],
-      "title": "Ö±Á÷/½»Á÷³äµçÁ¿",
+      "title": "ç›´æµ/äº¤æµå……ç”µé‡",
       "type": "piechart"
     },
     {
@@ -1515,7 +1515,7 @@
           ]
         }
       ],
-      "title": "³äµçÈÈÍ¼ (kWh)",
+      "title": "å……ç”µçƒ­å›¾ (kWh)",
       "type": "geomap"
     },
     {
@@ -1555,7 +1555,7 @@
               },
               {
                 "id": "displayName",
-                "value": "½»Á÷"
+                "value": "äº¤æµ"
               }
             ]
           },
@@ -1574,7 +1574,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Ö±Á÷"
+                "value": "ç›´æµ"
               }
             ]
           }
@@ -1650,7 +1650,7 @@
           }
         }
       ],
-      "title": "Ö±Á÷/½»Á÷³äµçÀÛ¼ÆÓÃÊ±",
+      "title": "ç›´æµ/äº¤æµå……ç”µç´¯è®¡ç”¨æ—¶",
       "type": "piechart"
     },
     {
@@ -1725,7 +1725,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "¹¦ÂÊ[kW]"
+                "value": "åŠŸç‡[kW]"
               }
             ]
           },
@@ -1737,7 +1737,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "³äµçË³Ğò"
+                "value": "å……ç”µé¡ºåº"
               }
             ]
           },
@@ -1749,7 +1749,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "¿ªÊ¼Ê±¼ä"
+                "value": "å¼€å§‹æ—¶é—´"
               }
             ]
           },
@@ -1761,7 +1761,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "½áÊøÊ±¼ä"
+                "value": "ç»“æŸæ—¶é—´"
               }
             ]
           },
@@ -1773,7 +1773,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "³äµçµØµã"
+                "value": "å……ç”µåœ°ç‚¹"
               }
             ]
           }
@@ -1913,7 +1913,7 @@
           ]
         }
       ],
-      "title": "Ö±Á÷³äµçÇúÏß",
+      "title": "ç›´æµå……ç”µæ›²çº¿",
       "type": "xychart"
     },
     {
@@ -1976,7 +1976,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Íê³É´ÎÊı"
+                "value": "å®Œæˆæ¬¡æ•°"
               },
               {
                 "id": "custom.cellOptions",
@@ -2078,7 +2078,7 @@
           }
         }
       ],
-      "title": "³äµçÍê³ÉÍ³¼Æ",
+      "title": "å……ç”µå®Œæˆç»Ÿè®¡",
       "transformations": [
         {
           "id": "configFromData",
@@ -2192,7 +2192,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "¿ªÊ¼´ÎÊı"
+                "value": "å¼€å§‹æ¬¡æ•°"
               },
               {
                 "id": "custom.cellOptions",
@@ -2262,7 +2262,7 @@
           }
         }
       ],
-      "title": "³äµç¿ªÊ¼´ÎÊı",
+      "title": "å……ç”µå¼€å§‹æ¬¡æ•°",
       "type": "table"
     },
     {
@@ -2303,7 +2303,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "µØµã"
+                "value": "åœ°ç‚¹"
               }
             ]
           },
@@ -2315,7 +2315,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "³äµçÁ¿"
+                "value": "å……ç”µé‡"
               },
               {
                 "id": "custom.width",
@@ -2330,7 +2330,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "µØµã"
+              "options": "åœ°ç‚¹"
             },
             "properties": [
               {
@@ -2342,7 +2342,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "³äµçÁ¿"
+              "options": "å……ç”µé‡"
             },
             "properties": [
               {
@@ -2405,7 +2405,7 @@
           }
         }
       ],
-      "title": "³äµçÕ¾ÅÅÃû[³äµçÁ¿]",
+      "title": "å……ç”µç«™æ’å[å……ç”µé‡]",
       "type": "table"
     },
     {
@@ -2446,7 +2446,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "µØµã"
+                "value": "åœ°ç‚¹"
               }
             ]
           },
@@ -2458,7 +2458,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "·ÑÓÃ"
+                "value": "è´¹ç”¨"
               },
               {
                 "id": "custom.width",
@@ -2477,7 +2477,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "µØµã"
+              "options": "åœ°ç‚¹"
             },
             "properties": [
               {
@@ -2542,7 +2542,7 @@
           }
         }
       ],
-      "title": "³äµçÕ¾ÅÅÃû[·ÑÓÃ]",
+      "title": "å……ç”µç«™æ’å[è´¹ç”¨]",
       "type": "table"
     }
   ],
@@ -2655,7 +2655,7 @@
     ]
   },
   "timezone": "",
-  "title": "³äµçÍ³¼Æ£¨»ã×Ü£©",
+  "title": "å……ç”µç»Ÿè®¡ï¼ˆæ±‡æ€»ï¼‰",
   "uid": "-pkIkhmRz",
   "version": 5,
   "weekStart": ""

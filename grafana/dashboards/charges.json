@@ -129,7 +129,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "ÈÕÆÚ"
+                "value": "æ—¥æœŸ"
               },
               {
                 "id": "unit",
@@ -162,7 +162,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "³äµçÁ¿"
+                "value": "å……ç”µé‡"
               },
               {
                 "id": "unit",
@@ -189,7 +189,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "¿ªÊ¼%"
+                "value": "å¼€å§‹%"
               },
               {
                 "id": "unit",
@@ -216,7 +216,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "½áÊø%"
+                "value": "ç»“æŸ%"
               },
               {
                 "id": "unit",
@@ -243,7 +243,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "³äµçÓÃÊ±"
+                "value": "å……ç”µç”¨æ—¶"
               },
               {
                 "id": "unit",
@@ -270,7 +270,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "³µÍâÎÂ¶È"
+                "value": "è½¦å¤–æ¸©åº¦"
               },
               {
                 "id": "unit",
@@ -323,7 +323,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "·ÑÓÃ"
+                "value": "è´¹ç”¨"
               },
               {
                 "id": "unit",
@@ -410,7 +410,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "µØµã"
+                "value": "åœ°ç‚¹"
               },
               {
                 "id": "unit",
@@ -474,7 +474,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "¹¦ÂÊ"
+                "value": "åŠŸç‡"
               },
               {
                 "id": "unit",
@@ -684,7 +684,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "ÏûºÄÁ¿"
+                "value": "æ¶ˆè€—é‡"
               },
               {
                 "id": "unit",
@@ -711,7 +711,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "ÄÜĞ§"
+                "value": "èƒ½æ•ˆ"
               },
               {
                 "id": "unit",
@@ -784,7 +784,7 @@
               },
               {
                 "id": "displayName",
-                "value": "µ¥¼Û"
+                "value": "å•ä»·"
               },
               {
                 "id": "custom.width",
@@ -812,7 +812,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Àï³Ì±í"
+                "value": "é‡Œç¨‹è¡¨"
               },
               {
                 "id": "unit",
@@ -869,7 +869,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "ÈÕÆÚ"
+            "displayName": "æ—¥æœŸ"
           }
         ]
       },
@@ -924,7 +924,7 @@
           ]
         }
       ],
-      "title": "³äµç¼ÇÂ¼",
+      "title": "å……ç”µè®°å½•",
       "transformations": [
         {
           "id": "merge",
@@ -1456,7 +1456,7 @@
     ]
   },
   "timezone": "",
-  "title": "³äµç¼ÇÂ¼",
+  "title": "å……ç”µè®°å½•",
   "uid": "TSmNYvRRk",
   "version": 3,
   "weekStart": ""
