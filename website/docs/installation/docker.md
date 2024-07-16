@@ -4,7 +4,7 @@ sidebar_label: Docker
 ---
 
 This document provides the necessary steps for installation of TeslaMate on any system that runs Docker. For a walkthrough that provides the necessary steps for manual installation see [Manual installation](debian.md).
-
+test
 This setup is recommended only if you are running TeslaMate **on your home network**, as otherwise your Tesla API tokens might be at risk. If you intend to expose TeslaMate directly to the internet check out the [advanced guides](../guides/traefik.md).
 
 ## Requirements
