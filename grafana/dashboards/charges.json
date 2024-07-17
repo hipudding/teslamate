@@ -129,7 +129,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Date"
+                "value": "日期"
               },
               {
                 "id": "unit",
@@ -162,7 +162,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Added"
+                "value": "充电量"
               },
               {
                 "id": "unit",
@@ -189,7 +189,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "% Start"
+                "value": "开始%"
               },
               {
                 "id": "unit",
@@ -216,7 +216,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "% End"
+                "value": "结束%"
               },
               {
                 "id": "unit",
@@ -243,7 +243,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Duration"
+                "value": "充电用时"
               },
               {
                 "id": "unit",
@@ -270,7 +270,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Temp"
+                "value": "车外温度"
               },
               {
                 "id": "unit",
@@ -323,7 +323,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Cost"
+                "value": "费用"
               },
               {
                 "id": "unit",
@@ -410,7 +410,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "地点"
               },
               {
                 "id": "unit",
@@ -474,7 +474,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "kW"
+                "value": "功率"
               },
               {
                 "id": "unit",
@@ -684,7 +684,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Used"
+                "value": "消耗量"
               },
               {
                 "id": "unit",
@@ -711,7 +711,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "能效"
               },
               {
                 "id": "unit",
@@ -784,7 +784,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Cost/kWh"
+                "value": "单价"
               },
               {
                 "id": "custom.width",
@@ -812,7 +812,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Odometer"
+                "value": "里程表"
               },
               {
                 "id": "unit",
@@ -869,7 +869,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Date"
+            "displayName": "日期"
           }
         ]
       },
@@ -924,7 +924,7 @@
           ]
         }
       ],
-      "title": "Charges",
+      "title": "充电记录",
       "transformations": [
         {
           "id": "merge",
@@ -1456,7 +1456,7 @@
     ]
   },
   "timezone": "",
-  "title": "Charges",
+  "title": "充电记录",
   "uid": "TSmNYvRRk",
   "version": 3,
   "weekStart": ""

@@ -120,7 +120,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Start"
+                "value": "开始时间"
               },
               {
                 "id": "unit",
@@ -153,7 +153,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "End"
+                "value": "结束时间"
               },
               {
                 "id": "unit",
@@ -176,7 +176,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "TR Loss"
+                "value": "里程消耗"
               },
               {
                 "id": "unit",
@@ -203,7 +203,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Period"
+                "value": "时长"
               },
               {
                 "id": "unit",
@@ -252,7 +252,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "TR Loss / h"
+                "value": "每小时消耗里程"
               },
               {
                 "id": "unit",
@@ -302,7 +302,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Standby"
+                "value": "休眠比"
               },
               {
                 "id": "unit",
@@ -355,7 +355,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "kWh"
+                "value": "电量消耗"
               },
               {
                 "id": "unit",
@@ -382,7 +382,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Ø-Power"
+                "value": "平均功率"
               },
               {
                 "id": "unit",
@@ -486,7 +486,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": " "
+                "value": "❄"
               },
               {
                 "id": "custom.align",
@@ -516,7 +516,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "title": "In cold weather, the estimated range loss cannot be estimated correctly and is therefore hidden.",
+                    "title": "在低温天气下，预估里程消耗可能不准确，因此会被隐藏起来。",
                     "url": ""
                   }
                 ]
@@ -524,6 +524,126 @@
               {
                 "id": "custom.width",
                 "value": 5
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "时长"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 642
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "每小时消耗里程"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "开始时间"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 229
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "结束时间"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 223
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "休眠比"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SOC"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "❄"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "里程消耗"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "电量消耗"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 124
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "平均功率"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 107
               }
             ]
           }
@@ -582,7 +702,7 @@
           ]
         }
       ],
-      "title": "Vampire Drain",
+      "title": "停车消耗",
       "transformations": [
         {
           "id": "merge",
@@ -776,7 +896,7 @@
     ]
   },
   "timezone": "",
-  "title": "Vampire Drain",
+  "title": "停车消耗",
   "uid": "zhHx2Fggk",
   "version": 1,
   "weekStart": ""

@@ -175,6 +175,10 @@
               {
                 "id": "unit",
                 "value": "percent"
+			  },
+              {
+                "id": "displayName",
+                "value": "SOC变化"
               }
             ]
           },
@@ -235,6 +239,10 @@
               {
                 "id": "decimals",
                 "value": 1
+              },
+              {
+                "id": "displayName",
+                "value": "消耗量"
               }
             ]
           },
@@ -267,6 +275,10 @@
               {
                 "id": "custom.width",
                 "value": 100
+              },
+              {
+                "id": "displayName",
+                "value": "持续时长"
               }
             ]
           },
@@ -293,6 +305,10 @@
               {
                 "id": "custom.minWidth",
                 "value": 200
+              },
+              {
+                "id": "displayName",
+                "value": "开始地点"
               }
             ]
           },
@@ -319,6 +335,10 @@
               {
                 "id": "custom.minWidth",
                 "value": 200
+              },
+              {
+                "id": "displayName",
+                "value": "结束地点"
               }
             ]
           },
@@ -414,7 +434,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Odometer"
+                "value": "里程表"
               },
               {
                 "id": "custom.width",
@@ -430,7 +450,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               },
               {
                 "id": "custom.width",
@@ -450,7 +470,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Range Diff"
+                "value": "里程变化"
               },
               {
                 "id": "custom.width",
@@ -470,7 +490,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Temperature"
+                "value": "平均温度"
               },
               {
                 "id": "custom.width",
@@ -490,7 +510,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Range"
+                "value": "续航里程"
               },
               {
                 "id": "custom.width",
@@ -525,6 +545,10 @@
                     "url": "${__data.fields.slotlink:raw}"
                   }
                 ]
+              },
+              {
+                "id": "displayName",
+                "value": "状态"
               }
             ]
           },
@@ -537,6 +561,18 @@
               {
                 "id": "custom.hidden",
                 "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "状态"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
               }
             ]
           }
@@ -620,7 +656,7 @@
           ]
         }
       ],
-      "title": "Timeline",
+      "title": "时间线",
       "transformations": [
         {
           "id": "organize",
@@ -750,27 +786,27 @@
           },
           {
             "selected": false,
-            "text": "🚗 Driving",
+            "text": "🚗 行驶",
             "value": "🚗 Driving"
           },
           {
             "selected": false,
-            "text": "🔋 Charging",
+            "text": "🔋 充电",
             "value": "🔋 Charging"
           },
           {
             "selected": false,
-            "text": "🅿️ Parking",
+            "text": "🅿️ 停车",
             "value": "🅿️ Parking"
           },
           {
             "selected": false,
-            "text": "❓ Missing",
+            "text": "❓ 未知",
             "value": "❓ Missing"
           },
           {
             "selected": false,
-            "text": "💾 Updating",
+            "text": "💾 更新",
             "value": "💾 Updating"
           }
         ],
@@ -876,7 +912,7 @@
   "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "",
-  "title": "Timeline",
+  "title": "时间线",
   "uid": "SUBgwtigz",
   "version": 3,
   "weekStart": ""
