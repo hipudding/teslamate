@@ -246,6 +246,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "displayName": "行驶里程",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -263,7 +264,7 @@
         "h": 2,
         "w": 5,
         "x": 0,
-        "y": 22
+        "y": 19
       },
       "id": 5,
       "options": {
@@ -370,6 +371,10 @@
               {
                 "id": "unit",
                 "value": "kwatth"
+              },
+              {
+                "id": "displayName",
+                "value": "充电量"
               }
             ]
           },
@@ -382,6 +387,10 @@
               {
                 "id": "unit",
                 "value": "kwatth"
+              },
+              {
+                "id": "displayName",
+                "value": "消耗量"
               }
             ]
           },
@@ -394,6 +403,10 @@
               {
                 "id": "unit",
                 "value": "percent"
+              },
+              {
+                "id": "displayName",
+                "value": "充电效率"
               }
             ]
           }
@@ -403,7 +416,7 @@
         "h": 2,
         "w": 14,
         "x": 5,
-        "y": 22
+        "y": 19
       },
       "id": 6,
       "maxDataPoints": 100,
@@ -550,7 +563,7 @@
       "fieldConfig": {
         "defaults": {
           "decimals": 2,
-          "displayName": "Cost",
+          "displayName": "费用",
           "mappings": [
             {
               "options": {
@@ -579,7 +592,7 @@
         "h": 2,
         "w": 5,
         "x": 19,
-        "y": 22
+        "y": 19
       },
       "id": 7,
       "maxDataPoints": 100,
@@ -765,7 +778,7 @@
     ]
   },
   "timezone": "",
-  "title": "Visited",
+  "title": "足迹地图",
   "uid": "RG_DxSmgk",
   "version": 3,
   "weekStart": ""

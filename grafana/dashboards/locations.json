@@ -161,7 +161,7 @@
           }
         }
       ],
-      "title": "Total addresses",
+      "title": "目的地数量",
       "type": "stat"
     },
     {
@@ -249,7 +249,7 @@
           }
         }
       ],
-      "title": "Cities",
+      "title": "城市数量",
       "type": "stat"
     },
     {
@@ -337,7 +337,7 @@
           }
         }
       ],
-      "title": "States",
+      "title": "省份数量",
       "type": "stat"
     },
     {
@@ -425,7 +425,7 @@
           }
         }
       ],
-      "title": "Countries",
+      "title": "国家数量",
       "type": "stat"
     },
     {
@@ -515,7 +515,7 @@
           }
         }
       ],
-      "title": "Cities",
+      "title": "城市",
       "type": "bargauge"
     },
     {
@@ -607,7 +607,7 @@
           }
         }
       ],
-      "title": "States",
+      "title": "省份",
       "type": "bargauge"
     },
     {
@@ -660,6 +660,10 @@
               {
                 "id": "custom.width",
                 "value": 180
+              },
+              {
+                "id": "displayName",
+                "value": "日期"
               }
             ]
           },
@@ -671,6 +675,22 @@
             "properties": [
               {
                 "id": "custom.width"
+              },
+              {
+                "id": "displayName",
+                "value": "城市"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Address"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "目的地"
               }
             ]
           }
@@ -697,7 +717,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Date"
+            "displayName": "日期"
           }
         ]
       },
@@ -736,7 +756,7 @@
           }
         }
       ],
-      "title": "Last visited",
+      "title": "足迹",
       "transformations": [
         {
           "id": "organize",
@@ -814,7 +834,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Name"
+                "value": "地点"
               },
               {
                 "id": "unit",
@@ -847,7 +867,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Neighbourhood"
+                "value": "社区街道"
               },
               {
                 "id": "unit",
@@ -870,7 +890,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "City"
+                "value": "城市"
               },
               {
                 "id": "unit",
@@ -893,7 +913,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "State"
+                "value": "省份"
               },
               {
                 "id": "unit",
@@ -916,7 +936,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Country"
+                "value": "国家"
               },
               {
                 "id": "unit",
@@ -1002,7 +1022,7 @@
           }
         }
       ],
-      "title": "Addresses",
+      "title": "目的地",
       "transformations": [
         {
           "id": "merge",
@@ -1076,7 +1096,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Name"
+                "value": "地点"
               },
               {
                 "id": "unit",
@@ -1170,7 +1190,7 @@
           }
         }
       ],
-      "title": "Geo-fences",
+      "title": "收藏点",
       "transformations": [
         {
           "id": "merge",
@@ -1288,7 +1308,7 @@
     ]
   },
   "timezone": "",
-  "title": "Locations",
+  "title": "访问过地点",
   "uid": "ZzhF-aRWz",
   "version": 2,
   "weekStart": ""

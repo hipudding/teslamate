@@ -99,7 +99,7 @@
               },
               {
                 "id": "displayName",
-                "value": "ID"
+                "value": "驾驶序号"
               }
             ]
           },
@@ -151,7 +151,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Start Time"
+                "value": "开始时间"
               }
             ]
           },
@@ -167,7 +167,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Start Odometer"
+                "value": "开始里程"
               }
             ]
           },
@@ -183,7 +183,7 @@
               },
               {
                 "id": "displayName",
-                "value": "End Odometer"
+                "value": "结束里程"
               }
             ]
           },
@@ -195,7 +195,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "End Time"
+                "value": "结束时间"
               }
             ]
           },
@@ -222,7 +222,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Duration"
+                "value": "行驶时长"
               },
               {
                 "id": "custom.width",
@@ -242,7 +242,7 @@
               },
               {
                 "id": "displayName",
-                "value": "km"
+                "value": "距离"
               }
             ]
           },
@@ -270,7 +270,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Start Address"
+                "value": "开始地点"
               }
             ]
           },
@@ -282,7 +282,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "End Address"
+                "value": "结束地点"
               }
             ]
           }
@@ -343,7 +343,7 @@
           ]
         }
       ],
-      "title": "Drive",
+      "title": "行驶报表",
       "type": "table"
     }
   ],
@@ -503,7 +503,7 @@
     "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
   },
   "timezone": "",
-  "title": "Drives - Dutch tax",
+  "title": "行程报告",
   "uid": "lBIoQIggk",
   "version": 1
 }

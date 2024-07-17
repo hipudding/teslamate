@@ -108,7 +108,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Projected Range",
+            "axisLabel": "预估范围",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -172,6 +172,22 @@
               },
               {
                 "id": "min"
+              },
+              {
+                "id": "displayName",
+                "value": "里程表"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Projected rated range [km]"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "额定可续航里程"
               }
             ]
           }
@@ -268,7 +284,7 @@
           ]
         }
       ],
-      "title": "Projected Range - Mileage",
+      "title": "预估范围 - 里程",
       "type": "timeseries"
     },
     {
@@ -285,7 +301,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Projected Range",
+            "axisLabel": "预计范围",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -349,7 +365,55 @@
               },
               {
                 "id": "custom.axisLabel",
-                "value": "Battery Level"
+                "value": "电池电量Km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Projected Range (using usable_battery_level) [km]"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "预计续航里程（可用电池电量）[km]"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Projected Range (using battery_level)[km]"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "预计续航里程（电池电量）[km]"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Battery Level [%]"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "电池电量%"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Usable Battery Level [%]"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "可用电池电量%"
               }
             ]
           }
@@ -464,7 +528,7 @@
           ]
         }
       ],
-      "title": "Projected Range - Battery Level",
+      "title": "预估范围 - 电池电量",
       "type": "timeseries"
     },
     {
@@ -481,7 +545,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Projected Range",
+            "axisLabel": "预估范围",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -544,6 +608,10 @@
               },
               {
                 "id": "min"
+              },
+              {
+                "id": "displayName",
+                "value": "温度"
               }
             ]
           },
@@ -559,6 +627,10 @@
                   "fixedColor": "#56A64B",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "预计续航里程（可用电池电量）[km]"
               }
             ]
           },
@@ -574,6 +646,10 @@
                   "fixedColor": "#C8F2C2",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "预计续航里程（电池电量）[km]"
               }
             ]
           }
@@ -687,7 +763,7 @@
           ]
         }
       ],
-      "title": "Projected Range - Outdoor Temp",
+      "title": "预估范围 - 车外温度",
       "type": "timeseries"
     }
   ],
@@ -894,7 +970,7 @@
     ]
   },
   "timezone": "",
-  "title": "Projected Range",
+  "title": "续航曲线",
   "uid": "riqUfXgRz",
   "version": 2,
   "weekStart": ""

@@ -129,6 +129,10 @@
               {
                 "id": "decimals",
                 "value": 1
+              },
+              {
+                "id": "displayName",
+                "value": "已驾驶时间"
               }
             ]
           },
@@ -147,10 +151,14 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Trip",
+                    "title": "行程",
                     "url": "d/FkUpJpQZk/trip?from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
                   }
                 ]
+              },
+              {
+                "id": "displayName",
+                "value": "时间段"
               }
             ]
           },
@@ -213,6 +221,10 @@
               {
                 "id": "unit",
                 "value": "kwatth"
+              },
+              {
+                "id": "displayName",
+                "value": "总充电量"
               }
             ]
           },
@@ -229,6 +241,10 @@
               {
                 "id": "decimals",
                 "value": 1
+              },
+              {
+                "id": "displayName",
+                "value": "平均每次充电"
               }
             ]
           },
@@ -241,6 +257,10 @@
               {
                 "id": "decimals",
                 "value": 2
+              },
+              {
+                "id": "displayName",
+                "value": "费用"
               }
             ]
           },
@@ -259,6 +279,10 @@
                     "url": "d/TSmNYvRRk/charges?from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
                   }
                 ]
+              },
+              {
+                "id": "displayName",
+                "value": "充电次数"
               }
             ]
           },
@@ -277,6 +301,10 @@
                     "url": "d/Y8upc6ZRk/drives?from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
                   }
                 ]
+              },
+              {
+                "id": "displayName",
+                "value": "行驶次数"
               }
             ]
           },
@@ -292,7 +320,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               }
             ]
           },
@@ -308,7 +336,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Temperature"
+                "value": "温度"
               },
               {
                 "id": "thresholds",
@@ -340,7 +368,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               },
               {
                 "id": "unit",
@@ -356,7 +384,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (drives)"
+                "value": "行驶能耗"
               },
               {
                 "id": "unit",
@@ -375,7 +403,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (charges)"
+                "value": "综合能耗"
               },
               {
                 "id": "unit",
@@ -398,6 +426,10 @@
               },
               {
                 "id": "custom.width"
+              },
+              {
+                "id": "displayName",
+                "value": "起始时间"
               }
             ]
           },
@@ -409,7 +441,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (drives)"
+                "value": "行驶能耗"
               },
               {
                 "id": "unit",
@@ -428,7 +460,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (charges)"
+                "value": "综合能耗"
               },
               {
                 "id": "unit",
@@ -447,7 +479,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Temperature"
+                "value": "温度"
               },
               {
                 "id": "unit",
@@ -542,7 +574,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Starting at"
+            "displayName": "起始时间"
           }
         ]
       },
@@ -909,7 +941,7 @@
       {
         "current": {
           "selected": false,
-          "text": "month",
+          "text": "月",
           "value": "month"
         },
         "hide": 0,
@@ -920,22 +952,22 @@
         "options": [
           {
             "selected": false,
-            "text": "day",
+            "text": "日",
             "value": "day"
           },
           {
             "selected": false,
-            "text": "week",
+            "text": "周",
             "value": "week"
           },
           {
             "selected": true,
-            "text": "month",
+            "text": "月",
             "value": "month"
           },
           {
             "selected": false,
-            "text": "year",
+            "text": "年",
             "value": "year"
           }
         ],
@@ -1010,7 +1042,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Statistics",
+  "title": "行程统计（年/月/日）",
   "uid": "1EZnXszMk",
   "version": 1,
   "weekStart": ""
