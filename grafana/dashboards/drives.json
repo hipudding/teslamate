@@ -120,7 +120,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Date"
+                "value": "日期"
               },
               {
                 "id": "unit",
@@ -153,7 +153,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Consumption"
+                "value": "平均能效"
               },
               {
                 "id": "unit",
@@ -199,7 +199,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "km"
+                "value": "行驶里程"
               },
               {
                 "id": "unit",
@@ -226,7 +226,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "kWh"
+                "value": "消耗量"
               },
               {
                 "id": "unit",
@@ -253,7 +253,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Start"
+                "value": "出发地"
               },
               {
                 "id": "links",
@@ -282,7 +282,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Destination"
+                "value": "目的地"
               },
               {
                 "id": "links",
@@ -311,7 +311,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Temp"
+                "value": "车外温度"
               },
               {
                 "id": "unit",
@@ -338,7 +338,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Duration"
+                "value": "行驶时长"
               },
               {
                 "id": "unit",
@@ -371,7 +371,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "效率"
               },
               {
                 "id": "unit",
@@ -447,7 +447,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Speed"
+                "value": "平均车速"
               },
               {
                 "id": "unit",
@@ -659,6 +659,10 @@
               {
                 "id": "custom.width",
                 "value": 65
+              },
+              {
+                "id": "displayName",
+                "value": "开始%"
               }
             ]
           },
@@ -682,6 +686,10 @@
               {
                 "id": "custom.width",
                 "value": 65
+              },
+              {
+                "id": "displayName",
+                "value": "结束%"
               }
             ]
           },
@@ -733,7 +741,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "title": "In cold weather, the estimated consumption may be incorrect and is therefore sometimes hidden.",
+                    "title": "在低温天气时，预估的消耗量可能不准确，因此有时会被隐藏。",
                     "url": ""
                   }
                 ]
@@ -771,7 +779,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "max Power"
+                "value": "最大功率"
               },
               {
                 "id": "unit",
@@ -783,6 +791,138 @@
               {
                 "id": "custom.width",
                 "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "日期"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 181
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "出发地"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 265
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "目的地"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 266
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "行驶时长"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 81
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "行驶里程"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "车外温度"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 73
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "平均车速"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 79
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "最大功率"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 78
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "❄"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 34
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "平均能效"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 114
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "效率"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 58
               }
             ]
           }
@@ -841,7 +981,7 @@
           ]
         }
       ],
-      "title": "Drive",
+      "title": "驾驶明细",
       "transformations": [
         {
           "id": "merge",
@@ -1037,7 +1177,7 @@
     ]
   },
   "timezone": "",
-  "title": "Drives",
+  "title": "行程报表",
   "uid": "Y8upc6ZRk",
   "version": 1,
   "weekStart": ""

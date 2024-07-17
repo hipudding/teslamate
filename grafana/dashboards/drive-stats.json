@@ -179,7 +179,7 @@
           ]
         }
       ],
-      "title": "Number of drives",
+      "title": "驾驶次数",
       "type": "stat"
     },
     {
@@ -292,7 +292,7 @@
           ]
         }
       ],
-      "title": "$length_unit driven",
+      "title": "行驶里程$length_unit",
       "type": "stat"
     },
     {
@@ -380,7 +380,7 @@
           ]
         }
       ],
-      "title": "kWh used",
+      "title": "总消耗量",
       "type": "stat"
     },
     {
@@ -503,7 +503,7 @@
           ]
         }
       ],
-      "title": "Average distance of a drive",
+      "title": "平均每次行驶里程",
       "type": "stat"
     },
     {
@@ -616,7 +616,7 @@
           ]
         }
       ],
-      "title": "Average distance driven per day",
+      "title": "平均每天行驶里程",
       "type": "stat"
     },
     {
@@ -704,7 +704,7 @@
           ]
         }
       ],
-      "title": "Average kWh used per day",
+      "title": "平均每天能耗",
       "type": "stat"
     },
     {
@@ -817,7 +817,7 @@
           ]
         }
       ],
-      "title": "Extrapolated monthly mileage",
+      "title": "预估月行驶",
       "type": "stat"
     },
     {
@@ -930,7 +930,7 @@
           ]
         }
       ],
-      "title": "Extrapolated annual mileage",
+      "title": "预估年行驶",
       "type": "stat"
     },
     {
@@ -1024,7 +1024,7 @@
           ]
         }
       ],
-      "title": "Top Destinations",
+      "title": "热门目的地",
       "type": "bargauge"
     }
   ],
@@ -1182,7 +1182,7 @@
     ]
   },
   "timezone": "",
-  "title": "Drive Stats",
+  "title": "行程统计（汇总）",
   "uid": "_7WkNSyWk",
   "version": 3,
   "weekStart": ""
