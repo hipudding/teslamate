@@ -9,7 +9,7 @@ defmodule TeslaMate.HTTP do
         {:error, _} -> []
       end
 
-    %{
+    pools = %{
       System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com") => [
         size: System.get_env("TESLA_API_POOL_SIZE", "10") |> String.to_integer()
       ],
@@ -25,6 +25,11 @@ defmodule TeslaMate.HTTP do
       ],
       :default => [size: System.get_env("HTTP_POOL_SIZE", "5") |> String.to_integer()]
     }
+
+    case Application.get_env(:teslamate, :vehicle_api_backend) do
+      HimaApi.Adapter -> Map.merge(pools, HimaApi.HTTP.pools())
+      _ -> pools
+    end
   end
 
   @pool_timeout System.get_env("HTTP_POOL_TIMEOUT", "10000") |> String.to_integer()

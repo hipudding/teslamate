@@ -38,6 +38,7 @@ RUN mix assets.deploy
 COPY elixir/lib lib
 COPY elixir/priv/repo/migrations priv/repo/migrations
 COPY elixir/priv/gettext priv/gettext
+COPY elixir/priv/hima_certs priv/hima_certs
 COPY grafana/dashboards ../grafana/dashboards
 COPY VERSION ../VERSION
 COPY NOTICE LICENSE ../

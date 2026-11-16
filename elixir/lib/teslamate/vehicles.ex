@@ -28,6 +28,7 @@ defmodule TeslaMate.Vehicles do
   alias __MODULE__.Vehicle
   alias TeslaMate.Log
   alias TeslaMate.Log.Car
+  alias TeslaMate.Settings
   alias TeslaMate.Settings.CarSettings
 
   defstruct [:supervisor, :vehicle]
@@ -125,6 +126,7 @@ defmodule TeslaMate.Vehicles do
       opts
       |> Keyword.get_lazy(:vehicles, &list_vehicles!/0)
       |> Enum.map(&create_or_update!/1)
+      |> Enum.map(&normalize_car/1)
       |> Enum.uniq_by(fn %Car{id: id} -> id end)
       |> Enum.filter(fn %Car{settings: settings} -> settings.enabled end)
       |> Enum.map(fn car ->
@@ -220,7 +222,9 @@ defmodule TeslaMate.Vehicles do
   defp start_vehicle_of(%TeslaApi.Vehicle{} = vehicle) do
     case create_or_update(vehicle) do
       {:ok, %Car{} = car} ->
-        start_vehicle_of_car(car)
+        car
+        |> normalize_car()
+        |> start_vehicle_of_car()
 
       # A concurrent discovery inserted the car between the lookup and the
       # insert; the second attempt finds and updates it.
@@ -314,26 +318,55 @@ defmodule TeslaMate.Vehicles do
          nil <- Log.get_car_by(eid: vehicle.id) do
       %Car{settings: default_settings(vehicle)}
     end
-    |> Car.changeset(%{
-      name: vehicle.display_name,
-      eid: vehicle.id,
-      vid: vehicle.vehicle_id,
-      vin: vehicle.vin
-    })
+    |> Car.changeset(
+      %{
+        name: vehicle.display_name,
+        eid: vehicle.id,
+        vid: vehicle.vehicle_id,
+        vin: vehicle.vin
+      }
+      |> Map.merge(Vehicle.profile_attributes(vehicle))
+    )
     |> Log.create_or_update_car()
   end
 
+  # HIMA has no push API. A stale setting must not make the vehicle process
+  # try to open a Tesla stream after an upgrade or a manual toggle.
+  defp normalize_car(%Car{settings: %CarSettings{use_streaming_api: false}} = car), do: car
+
+  defp normalize_car(%Car{settings: %CarSettings{} = settings} = car) do
+    if TeslaMate.VehicleApi.supports_streaming?() do
+      car
+    else
+      case settings
+           |> TeslaMate.Repo.preload(:car)
+           |> Settings.update_car_settings(%{use_streaming_api: false}) do
+        {:ok, %CarSettings{} = settings} -> %{car | settings: settings}
+        _ -> car
+      end
+    end
+  end
+
+  defp normalize_car(%Car{} = car), do: car
+
   defp default_settings(%TeslaApi.Vehicle{} = vehicle) do
-    case Vehicle.identify(vehicle) do
-      {:ok, %{model: m, trim_badging: trim_badging, marketing_name: marketing_name}}
-      when m in ["S", "X"] and (trim_badging == nil or is_binary(marketing_name)) ->
-        %CarSettings{suspend_min: 12}
+    settings =
+      case Vehicle.identify(vehicle) do
+        {:ok, %{model: m, trim_badging: trim_badging, marketing_name: marketing_name}}
+        when m in ["S", "X"] and (trim_badging == nil or is_binary(marketing_name)) ->
+          %CarSettings{suspend_min: 12}
 
-      {:ok, %{model: m}} when m in ["3", "Y", "Cybertruck"] ->
-        %CarSettings{suspend_min: 12}
+        {:ok, %{model: m}} when m in ["3", "Y", "Cybertruck"] ->
+          %CarSettings{suspend_min: 12}
 
-      _ ->
-        %CarSettings{}
+        _ ->
+          %CarSettings{}
+      end
+
+    if TeslaMate.VehicleApi.supports_streaming?() do
+      settings
+    else
+      %CarSettings{settings | use_streaming_api: false}
     end
   end
 end

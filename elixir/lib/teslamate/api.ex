@@ -4,7 +4,7 @@ defmodule TeslaMate.Api do
   require Logger
 
   alias TeslaMate.Auth.Tokens
-  alias TeslaMate.{Vehicles, Convert}
+  alias TeslaMate.{Vehicles, Convert, VehicleApi}
   alias TeslaApi.Auth
 
   alias Finch.Response
@@ -30,28 +30,32 @@ defmodule TeslaMate.Api do
 
   def list_vehicles(name \\ @name) do
     with {:ok, auth} <- fetch_auth(name) do
-      TeslaApi.Vehicle.list(auth)
+      VehicleApi.list_vehicles(auth)
       |> handle_result(auth, name)
     end
   end
 
   def get_vehicle(name \\ @name, id) do
     with {:ok, auth} <- fetch_auth(name) do
-      TeslaApi.Vehicle.get(auth, id)
+      VehicleApi.get_vehicle(auth, id)
       |> handle_result(auth, name)
     end
   end
 
   def get_vehicle_with_state(name \\ @name, id) do
     with {:ok, auth} <- fetch_auth(name) do
-      TeslaApi.Vehicle.get_with_state(auth, id)
+      VehicleApi.get_vehicle_with_state(auth, id)
       |> handle_result(auth, name)
     end
   end
 
   def stream(name \\ @name, vid, receiver) do
     with {:ok, %Auth{} = auth} <- fetch_auth(name) do
-      TeslaApi.Stream.start_link(auth: auth, vehicle_id: vid, receiver: receiver)
+      if VehicleApi.supports_streaming?() do
+        VehicleApi.start_stream(auth, vid, receiver)
+      else
+        {:error, :streaming_not_supported}
+      end
     end
   end
 
@@ -142,7 +146,7 @@ defmodule TeslaMate.Api do
   def handle_call({:sign_in, args}, _, %State{} = state) do
     case args do
       [args, callback] when is_function(callback) -> apply(callback, args)
-      [%Tokens{} = t] -> Auth.refresh(%Auth{token: t.access, refresh_token: t.refresh})
+      [%Tokens{} = t] -> VehicleApi.refresh_auth(%Auth{token: t.access, refresh_token: t.refresh})
     end
     |> case do
       {:ok, %Auth{} = auth} ->
@@ -187,7 +191,7 @@ defmodule TeslaMate.Api do
       {:ok, tokens} ->
         Logger.info("Refreshing access token ...")
 
-        case Auth.refresh(tokens) do
+        case VehicleApi.refresh_auth(tokens) do
           {:ok, refreshed_tokens} ->
             true = insert_auth(name, refreshed_tokens)
             :ok = call(state.deps.auth, :save, [refreshed_tokens])
@@ -197,12 +201,23 @@ defmodule TeslaMate.Api do
 
           {:error, reason} ->
             Logger.warning("Token refresh failed: #{inspect(reason, pretty: true)}")
-            Logger.warning("Retrying in 5 minutes...")
 
-            if is_reference(state.refresh_timer), do: Process.cancel_timer(state.refresh_timer)
-            refresh_timer = Process.send_after(self(), :refresh_auth, :timer.minutes(5))
+            if VehicleApi.hima?() and
+                 match?(%TeslaApi.Error{reason: :invalid_tokens}, reason) do
+              Logger.warning("HIMA 凭据已失效，需要重新登录")
 
-            {:noreply, %State{state | refresh_timer: refresh_timer}}
+              true = :ets.delete(name, :auth)
+              {:noreply, %State{state | refresh_timer: nil}}
+            else
+              Logger.warning("Retrying in 5 minutes...")
+
+              if is_reference(state.refresh_timer),
+                do: Process.cancel_timer(state.refresh_timer)
+
+              refresh_timer = Process.send_after(self(), :refresh_auth, :timer.minutes(5))
+
+              {:noreply, %State{state | refresh_timer: refresh_timer}}
+            end
         end
 
       {:error, reason} ->
@@ -225,7 +240,7 @@ defmodule TeslaMate.Api do
         {:ok, tokens}
 
       false ->
-        with {:ok, %Auth{} = refresh_tokens} <- Auth.refresh(tokens) do
+        with {:ok, %Auth{} = refresh_tokens} <- VehicleApi.refresh_auth(tokens) do
           Logger.info("Refreshed api tokens")
           {:ok, refresh_tokens}
         end
@@ -274,12 +289,27 @@ defmodule TeslaMate.Api do
 
         case :fuse.ask(fuse_name(name), :sync) do
           :blown ->
-            true = :ets.delete(name, :auth)
-            {:error, :not_signed_in}
+            if VehicleApi.hima?() do
+              # HIMA 续期有 10 分钟签发冷却。token 只是暂时不可用时
+              # 不要登出；定时续期会把它恢复。
+              {:error, :unauthorized}
+            else
+              true = :ets.delete(name, :auth)
+              {:error, :not_signed_in}
+            end
 
           :ok ->
             send(name, :refresh_auth)
             {:error, :unauthorized}
+        end
+
+      {:error, %TeslaApi.Error{reason: :invalid_tokens}} ->
+        if VehicleApi.hima?() do
+          # The HIMA refresh token itself is expired; a new bundle is required.
+          true = :ets.delete(name, :auth)
+          {:error, :not_signed_in}
+        else
+          {:error, :invalid_tokens}
         end
 
       {:error, %TeslaApi.Error{reason: reason, env: %Response{status: status, body: body}}} ->
@@ -308,7 +338,7 @@ defmodule TeslaMate.Api do
   end
 
   defp preload_vehicle(%TeslaApi.Vehicle{state: "online", id: id} = vehicle, auth) do
-    case TeslaApi.Vehicle.get_with_state(auth, id) do
+    case VehicleApi.get_vehicle_with_state(auth, id) do
       {:ok, %TeslaApi.Vehicle{} = vehicle} ->
         vehicle
 

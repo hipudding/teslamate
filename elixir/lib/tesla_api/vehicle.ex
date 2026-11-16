@@ -22,7 +22,9 @@ defmodule TeslaApi.Vehicle do
             drive_state: nil,
             gui_settings: nil,
             vehicle_config: nil,
-            vehicle_state: nil
+            vehicle_state: nil,
+            # Backend-specific profile metadata (e.g. HIMA model/color/efficiency)
+            profile: nil
 
   def list(%Auth{} = auth) do
     endpoint_url =

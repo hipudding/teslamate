@@ -109,7 +109,20 @@ defmodule Util do
   end
 end
 
+vehicle_api_backend =
+  case System.get_env("VEHICLE_API_BACKEND", "tesla") do
+    "tesla" ->
+      TeslaApi.Adapter
+
+    "hima" ->
+      HimaApi.Adapter
+
+    other ->
+      raise "VEHICLE_API_BACKEND must be 'tesla' or 'hima', got: #{inspect(other)}"
+  end
+
 config :teslamate,
+  vehicle_api_backend: vehicle_api_backend,
   default_geofence: System.get_env("DEFAULT_GEOFENCE")
 
 case System.get_env("DATABASE_SOCKET_DIR") do

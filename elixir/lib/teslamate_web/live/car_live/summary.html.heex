@@ -441,7 +441,7 @@
               </td>
             </tr>
           <% end %>
-          <%= if @summary.state not in [:asleep, :offline, :suspended] or DateTime.diff(DateTime.utc_now(), @summary.since) < 30*60 do %>
+          <%= if @summary.state not in [:asleep, :offline, :suspended] or DateTime.diff(DateTime.utc_now(), @summary.since || DateTime.utc_now()) < 30*60 do %>
             <%= unless is_nil(@summary.outside_temp) do %>
               <tr>
                 <td class="has-text-weight-medium">{gettext("Outside Temperature")}</td>

@@ -128,7 +128,7 @@ defmodule TeslaMate.Vehicles.Vehicle do
   def format_model(model) when model in @models_with_prefix, do: "Model #{model}"
   def format_model(model), do: model
 
-  def identify(%Vehicle{display_name: name, vin: vin, vehicle_config: config}) do
+  def identify(%Vehicle{display_name: name, vin: vin, vehicle_config: config} = vehicle) do
     case config do
       %VehicleConfig{
         car_type: type,
@@ -185,12 +185,30 @@ defmodule TeslaMate.Vehicles.Vehicle do
            exterior_color: exterior_color,
            spoiler_type: spoiler_type,
            wheel_type: wheel_type
-         }}
+         }
+         |> Map.merge(profile_attributes(vehicle))}
 
       nil ->
         {:error, :vehicle_config_not_available}
     end
   end
+
+  @profile_fields ~w(model trim_badging marketing_name exterior_color wheel_type spoiler_type efficiency)a
+
+  @doc """
+  Non-nil profile metadata supplied by a non-Tesla backend.
+
+  Tesla vehicles leave `profile` nil; HIMA fills model/color/efficiency so the
+  resulting `Car` row and UI show the actual vehicle instead of a generic name.
+  """
+  def profile_attributes(%Vehicle{profile: profile}) when is_map(profile) do
+    profile
+    |> Map.take(@profile_fields)
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+    |> Map.new()
+  end
+
+  def profile_attributes(%Vehicle{}), do: %{}
 
   # Position 10 of a 17-character VIN encodes the model year. Codes repeat every
   # 30 years; current Tesla VINs are resolved against the 2010-2039 cycle.
@@ -2308,6 +2326,9 @@ defmodule TeslaMate.Vehicles.Vehicle do
 
   defp synchronize_updates(%Vehicle{vehicle_state: vehicle_state}, %Data{car: car} = data) do
     case vehicle_state do
+      %VehicleState{car_version: nil} ->
+        :ok
+
       %VehicleState{timestamp: ts, car_version: vsn} when is_binary(vsn) ->
         case call(data.deps.log, :get_latest_update, [car]) do
           nil ->

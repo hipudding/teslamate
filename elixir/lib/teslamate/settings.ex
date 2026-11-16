@@ -7,7 +7,7 @@ defmodule TeslaMate.Settings do
   alias TeslaMate.Repo
 
   alias __MODULE__.{GlobalSettings, CarSettings}
-  alias TeslaMate.{Log, Locations, Mutex, Vehicles}
+  alias TeslaMate.{Log, Locations, Mutex, VehicleApi, Vehicles}
   alias TeslaMate.Log.Car
   import Core.Dependency, only: [call: 2]
 
@@ -80,6 +80,8 @@ defmodule TeslaMate.Settings do
   end
 
   def update_car_settings(%CarSettings{car: %Car{}} = pre, attrs) do
+    attrs = force_streaming_off(attrs)
+
     Repo.transaction(fn ->
       with {:ok, post} <- pre |> CarSettings.changeset(attrs) |> Repo.update(),
            :ok <- on_enabled_change(pre, post),
@@ -96,7 +98,8 @@ defmodule TeslaMate.Settings do
   end
 
   def change_car_settings(%CarSettings{} = car_settings, attrs \\ %{}) do
-    CarSettings.changeset(car_settings, attrs)
+    car_settings
+    |> CarSettings.changeset(force_streaming_off(attrs))
   end
 
   def topic(%Car{id: id}), do: inspect(CarSettings) <> to_string(id)
@@ -119,6 +122,17 @@ defmodule TeslaMate.Settings do
     end
 
     :ok
+  end
+
+  defp force_streaming_off(attrs) when is_map(attrs) do
+    if VehicleApi.supports_streaming?() do
+      attrs
+    else
+      attrs
+      |> Map.delete(:use_streaming_api)
+      |> Map.delete("use_streaming_api")
+      |> Map.put(:use_streaming_api, false)
+    end
   end
 
   defp broadcast(car, settings) do
