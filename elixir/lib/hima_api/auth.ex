@@ -34,6 +34,11 @@ defmodule HimaApi.Auth do
   # 没有到期时间时给一个保守的周期；实际取数遇到 401 会立即触发续期。
   @default_expires_in 24 * 60 * 60
 
+  # hima-info 建议用户会话每 6~12 小时滚动一次；TeslaMate 在 75% 处续期，
+  # 因此把 expires_in 上限压到 12 小时（实际约 9 小时续期一次），避免
+  # userRefreshToken 先失效导致必须重新登录。
+  @max_refresh_interval 12 * 60 * 60
+
   # 两次实际签发之间的最小间隔：HIMA 每次签发都会注销同账号旧 token。
   @issue_cooldown_seconds 10 * 60
 
@@ -81,6 +86,7 @@ defmodule HimaApi.Auth do
           nil -> @default_expires_in
           expiry -> max(expiry - System.system_time(:second), 60)
         end
+        |> min(@max_refresh_interval)
 
       {:ok,
        %Auth{
@@ -168,6 +174,11 @@ defmodule HimaApi.Auth do
             clear_error()
             build_auth(new_bundle)
 
+          {:ok, new_bundle, :user_only} ->
+            Logger.warning("HIMA 用户会话已续期；车辆 token 暂未续期，稍后重试")
+            clear_error()
+            build_auth(new_bundle)
+
           {:error, %Error{reason: :invalid_tokens} = u_error} ->
             cache_error(u_error)
 
@@ -244,27 +255,129 @@ defmodule HimaApi.Auth do
     case Omp.user_refresh(bundle) do
       {:ok, user} ->
         bundle = apply_user_refresh(bundle, user)
-        Logger.info("HIMA 用户会话已续期，刷新车辆 token")
 
-        case refresh_vehicle(bundle) do
-          {:ok, new_bundle} ->
-            {:ok, new_bundle}
+        case maybe_kickout(bundle, user) do
+          {:ok, bundle} ->
+            Logger.info("HIMA 用户会话已续期，刷新车辆 token")
+            refresh_vehicle_with_fallbacks(bundle)
 
-          {:error, v_error} ->
-            # 不自动走 vehicle/auth：它会重新签发并可能踢掉手机。
-            # 车辆 token 仍未到期时，保留刚拿到的用户会话，下次续期再试。
-            Logger.warning("HIMA 用户会话已续期，但车辆 token 续期失败: #{error_message(v_error)}")
-            now = System.system_time(:second)
-
-            case vehicle_expiry(bundle) do
-              expiry when is_integer(expiry) and expiry > now + 300 -> {:ok, bundle}
-              _ -> {:error, v_error}
-            end
+          {:error, error} ->
+            {:error, error}
         end
 
       {:error, reason} ->
         {:error, refresh_error(reason)}
     end
+  end
+
+  defp refresh_vehicle_with_fallbacks(bundle) do
+    case refresh_vehicle(bundle) do
+      {:ok, new_bundle} ->
+        {:ok, new_bundle}
+
+      {:error, %Error{reason: :session_expired} = v_error} ->
+        Logger.warning("HIMA 车辆续期返回 10011，踢掉其他设备后重试")
+
+        case kickout_and_retry(bundle) do
+          {:ok, new_bundle} -> {:ok, new_bundle}
+          {:error, retry_error} -> refresh_vehicle_auth_or_user_only(bundle, v_error, retry_error)
+        end
+
+      {:error, v_error} ->
+        refresh_vehicle_auth_or_user_only(bundle, v_error, nil)
+    end
+  end
+
+  defp refresh_vehicle_auth_or_user_only(bundle, v_error, retry_error) do
+    Logger.warning(
+      "HIMA 车辆 token 续期失败: #{error_message(v_error)}" <>
+        if(retry_error, do: " / #{error_message(retry_error)}", else: "")
+    )
+
+    if auth_error?(v_error) or auth_error?(retry_error) do
+      case issue_vehicle_auth(bundle) do
+        {:ok, new_bundle} ->
+          Logger.info("HIMA 车辆 token 已通过 vehicle/auth 重新签发")
+          {:ok, new_bundle}
+
+        {:error, a_error} ->
+          Logger.warning("HIMA vehicle/auth 也失败: #{error_message(a_error)}；保留用户会话")
+          {:ok, bundle, :user_only}
+      end
+    else
+      # 网络/服务端临时错误：不要为了续期去顶掉其他设备，保留刚拿到的用户会话。
+      {:ok, bundle, :user_only}
+    end
+  end
+
+  defp auth_error?(%Error{reason: reason}),
+    do: reason in [:invalid_tokens, :session_expired, :unauthorized]
+
+  defp auth_error?(_), do: false
+
+  defp kickout_and_retry(bundle) do
+    case Omp.user_kickout(bundle) do
+      {:ok, payload} ->
+        bundle = apply_kickout(bundle, payload)
+        refresh_vehicle(bundle)
+
+      {:error, reason} ->
+        {:error, refresh_error(reason)}
+    end
+  end
+
+  defp issue_vehicle_auth(bundle) do
+    with {:ok, payload} <- Omp.vehicle_auth(bundle),
+         {:ok, token} <- extract_token(payload, bundle) do
+      {:ok, apply_vehicle_refresh(bundle, token)}
+    else
+      {:error, reason} -> {:error, refresh_error(reason)}
+    end
+  end
+
+  # user/refresh 返回 sessionKeyStatus=1 时，当前设备未受信；
+  # 按用户授权踢掉其他在线设备，把会话转成受信。
+  defp maybe_kickout(bundle, user) do
+    if untrusted_session?(user) do
+      Logger.warning("HIMA 会话未受信，踢掉其他在线设备")
+
+      case Omp.user_kickout(bundle) do
+        {:ok, payload} ->
+          if untrusted_session?(payload) do
+            {:error, %Error{reason: :session_expired, message: "user/kickout 后会话仍未受信"}}
+          else
+            {:ok, apply_kickout(bundle, payload)}
+          end
+
+        {:error, reason} ->
+          {:error, refresh_error(reason)}
+      end
+    else
+      {:ok, bundle}
+    end
+  end
+
+  defp untrusted_session?(payload) do
+    info =
+      case payload do
+        %{"userInfo" => %{} = info} -> info
+        _ -> %{}
+      end
+
+    status = info["sessionKeyStatus"] || payload["sessionKeyStatus"]
+    to_string(status || "") == "1"
+  end
+
+  defp apply_kickout(bundle, payload) do
+    info =
+      case payload do
+        %{"userInfo" => %{} = info} -> info
+        _ -> %{}
+      end
+
+    bundle
+    |> put_present("sessionKey", payload["sessionKey"] || info["sessionKey"])
+    |> put_present("userId", info["userId"] || payload["userId"])
   end
 
   defp extract_token(payload, bundle) do

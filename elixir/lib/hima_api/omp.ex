@@ -19,6 +19,7 @@ defmodule HimaApi.Omp do
   @omp "https://omp.uopes.cn"
   @vehicle_auth @omp <> "/xcar/omp/xbs/account/vehicle/auth"
   @user_refresh @omp <> "/xcar/omp/xbs/account/user/refresh"
+  @user_kickout @omp <> "/xcar/omp/xbs/account/user/kickout"
   @vehicle_refresh @omp <> "/xcar/omp/xbs/account/vehicle/refresh"
 
   # 按品牌分组的车辆云地址（来自官方 APK assets/config.json）
@@ -128,10 +129,28 @@ defmodule HimaApi.Omp do
       omp_headers(
         session_key: bundle["sessionKey"],
         user_id: bundle["userId"],
+        ec: bundle["enterpriseCode"],
         device_model: device_model(bundle)
       )
 
-    with {:ok, resp} <- request(:post, @user_refresh, headers, body) do
+    with {:ok, resp} <- request(:post, @user_refresh, headers, body),
+         {:ok, payload} <- omp_payload(resp),
+         {:ok, payload} <- validate_user_refresh(payload) do
+      {:ok, payload}
+    end
+  end
+
+  @doc "踢掉同账号其他在线设备，把 sessionKeyStatus 转为 0（手机端会掉线）。"
+  def user_kickout(%{"sessionKey" => sk, "userId" => uid} = bundle) do
+    headers =
+      omp_headers(
+        session_key: sk,
+        user_id: uid,
+        device_model: device_model(bundle)
+      )
+
+    with {:ok, resp} <-
+           request(:post, @user_kickout, headers, %{"deviceInfo" => device(bundle)}) do
       omp_payload(resp)
     end
   end
@@ -270,6 +289,12 @@ defmodule HimaApi.Omp do
         {:error, reason}
     end
   end
+
+  defp validate_user_refresh(%{"sessionKey" => sk, "oauthToken" => %{}} = payload)
+       when is_binary(sk) and sk != "",
+       do: {:ok, payload}
+
+  defp validate_user_refresh(_), do: {:error, :invalid_user_refresh_response}
 
   defp uuid4 do
     <<a::32, b::16, c::16, d::16, e::48>> = :crypto.strong_rand_bytes(16)
