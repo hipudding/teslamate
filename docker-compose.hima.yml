@@ -37,7 +37,7 @@ services:
       - ENCRYPTION_KEY=${ENCRYPTION_KEY:?请先在 .env 中设置 ENCRYPTION_KEY}
       - TZ=${TZ:-Asia/Shanghai}
       - POLLING_ASLEEP_INTERVAL=${POLLING_ASLEEP_INTERVAL:-30}
-      - POLLING_ONLINE_INTERVAL=${POLLING_ONLINE_INTERVAL:-30}
+      - POLLING_ONLINE_INTERVAL=${POLLING_ONLINE_INTERVAL:-60}
       # 行驶间隔不通过环境变量设置：上游 interval/2 只接受整数，
       # 而行驶默认值是 2.5 秒（浮点）。不设置该变量时使用代码默认值 2.5。
       - POLLING_CHARGING_INTERVAL=${POLLING_CHARGING_INTERVAL:-5}
