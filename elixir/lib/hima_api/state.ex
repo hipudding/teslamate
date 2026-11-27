@@ -44,6 +44,14 @@ defmodule HimaApi.State do
         (int(vs["connectStatus"]) == 1 or charging_state in ["Starting", "Charging"] or
            moving?(vs))
 
+    # HIMA 的平均能耗（kWh/100km）用于 TeslaMate 的 cars.efficiency。
+    # 只在车辆上线时由 profile_attributes/update_car 落库。
+    meta =
+      case efficiency(vs["avgEgyCnse"]) do
+        nil -> meta
+        efficiency -> %{meta | profile: Map.put(meta.profile || %{}, :efficiency, efficiency)}
+      end
+
     %TV{
       meta
       | state: if(online?, do: "online", else: "asleep"),
@@ -447,6 +455,16 @@ defmodule HimaApi.State do
 
   defp num(_), do: nil
 
+  # kWh/100km → kWh/km（TeslaMate `Car.efficiency` 的单位）。
+  # 已经 <= 1 的值按 kWh/km 处理。
+  defp efficiency(value) do
+    case num(value) do
+      value when is_number(value) and value > 1 -> Float.round(value / 100, 4)
+      value when is_number(value) and value > 0 -> value
+      _ -> nil
+    end
+  end
+
   defp int(value) when is_integer(value), do: value
   defp int(value) when is_float(value), do: trunc(value)
 
@@ -532,7 +550,10 @@ defmodule HimaApi.State do
   defp soft_warning(_), do: nil
 
   defp bool01(nil), do: nil
-  defp bool01(0), do: false
+
+  # HIMA 用负数作为“未知/不适用”哨兵值（例如 isChargeKeepWarm = -1），不能当成 true。
+  defp bool01(value) when is_number(value) and value < 0, do: nil
+  defp bool01(value) when is_number(value) and value == 0, do: false
   defp bool01(_), do: true
 
   defp present?(nil), do: false

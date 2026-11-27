@@ -12,8 +12,10 @@ defmodule HimaApi.Auth do
   凭据包可以是最初的扁平 JSON，也可以是带 `vehicle`/`account`/`session`
   分组的 v1 结构；解析时统一压平并只保留续期需要的字段。
 
-  续期链：`vehicle/refresh`（优先）→ `user/refresh` + `vehicle/auth`
-  （会话续期后重新签发）。不会主动 `kickout` 手机端。
+  续期链：`vehicle/refresh`（优先）→ `user/refresh` + `vehicle/refresh`。
+  OMP 10011（sessionKey 过期）会先刷新用户会话；只有 10022
+  （用户 refreshToken 失效）才需要重新登录。不会主动 `vehicle/auth`
+  或 `kickout`，避免把手机顶下线。
 
   续期由 `TeslaMate.Api` 既有的启动/定时/401 调度驱动，本模块不启动进程。
   实际签发时间写入凭据包 `vehicleTokenIssuedAt`，10 分钟内重复调用直接
@@ -155,11 +157,10 @@ defmodule HimaApi.Auth do
         clear_error()
         build_auth(new_bundle)
 
-      {:error, %Error{reason: :invalid_tokens} = error} ->
-        cache_error(error)
-
-      {:error, v_reason} ->
-        Logger.info("HIMA 车辆续期失败，尝试用户会话续期: #{inspect(v_reason)}")
+      {:error, v_error} ->
+        # 10011 通常是 20 分钟 sessionKey 过期，先刷新用户会话再重试；
+        # 只有 user/refresh 返回 10022（用户 refreshToken 失效）才需要重新登录。
+        Logger.info("HIMA 车辆续期失败，先刷新用户会话: #{error_message(v_error)}")
 
         case refresh_user_then_vehicle(bundle) do
           {:ok, new_bundle} ->
@@ -167,11 +168,14 @@ defmodule HimaApi.Auth do
             clear_error()
             build_auth(new_bundle)
 
-          {:error, u_reason} ->
+          {:error, %Error{reason: :invalid_tokens} = u_error} ->
+            cache_error(u_error)
+
+          {:error, u_error} ->
             cache_error(%Error{
               reason: :unknown,
               message:
-                "vehicle_refresh: #{error_message(v_reason)} / user_refresh: #{error_message(u_reason)}"
+                "vehicle_refresh: #{error_message(v_error)} / user_refresh: #{error_message(u_error)}"
             })
         end
     end
@@ -225,7 +229,9 @@ defmodule HimaApi.Auth do
     :ok
   end
 
-  defp refresh_vehicle_first(bundle) do
+  defp refresh_vehicle_first(bundle), do: refresh_vehicle(bundle)
+
+  defp refresh_vehicle(bundle) do
     with {:ok, payload} <- Omp.vehicle_refresh(bundle),
          {:ok, token} <- extract_token(payload, bundle) do
       {:ok, apply_vehicle_refresh(bundle, token)}
@@ -235,25 +241,29 @@ defmodule HimaApi.Auth do
   end
 
   defp refresh_user_then_vehicle(bundle) do
-    with {:ok, user} <- Omp.user_refresh(bundle),
-         bundle = apply_user_refresh(bundle, user),
-         {:ok, token} <- issue_vehicle_token(bundle) do
-      {:ok, apply_vehicle_refresh(bundle, token)}
-    else
-      {:error, reason} -> {:error, refresh_error(reason)}
-    end
-  end
+    case Omp.user_refresh(bundle) do
+      {:ok, user} ->
+        bundle = apply_user_refresh(bundle, user)
+        Logger.info("HIMA 用户会话已续期，刷新车辆 token")
 
-  defp issue_vehicle_token(bundle) do
-    with {:ok, payload} <- Omp.vehicle_auth(bundle),
-         {:ok, token} <- extract_token(payload, bundle) do
-      {:ok, token}
-    else
-      _ ->
-        with {:ok, payload} <- Omp.vehicle_refresh(bundle),
-             {:ok, token} <- extract_token(payload, bundle) do
-          {:ok, token}
+        case refresh_vehicle(bundle) do
+          {:ok, new_bundle} ->
+            {:ok, new_bundle}
+
+          {:error, v_error} ->
+            # 不自动走 vehicle/auth：它会重新签发并可能踢掉手机。
+            # 车辆 token 仍未到期时，保留刚拿到的用户会话，下次续期再试。
+            Logger.warning("HIMA 用户会话已续期，但车辆 token 续期失败: #{error_message(v_error)}")
+            now = System.system_time(:second)
+
+            case vehicle_expiry(bundle) do
+              expiry when is_integer(expiry) and expiry > now + 300 -> {:ok, bundle}
+              _ -> {:error, v_error}
+            end
         end
+
+      {:error, reason} ->
+        {:error, refresh_error(reason)}
     end
   end
 
@@ -479,8 +489,11 @@ defmodule HimaApi.Auth do
     %Error{reason: :invalid_tokens, message: "凭据包已失效，请重新登录"}
   end
 
-  defp refresh_error({:omp, 10011, _message}) do
-    %Error{reason: :invalid_tokens, message: "登录会话已过期，请重新登录"}
+  # 10011 / 100011 / 100015 = sessionKey 过期或会话被注销，通常可先用
+  # user/refresh 恢复；不要映射成 :invalid_tokens，否则 TeslaMate.Api 会清掉登录态。
+  defp refresh_error({:omp, code, _message})
+       when code in [10011, "10011", 100_011, "100011", 100_015, "100015"] do
+    %Error{reason: :session_expired, message: "登录会话已过期，正在尝试刷新用户会话"}
   end
 
   defp refresh_error({:http, 401, _body}), do: %Error{reason: :unauthorized}
