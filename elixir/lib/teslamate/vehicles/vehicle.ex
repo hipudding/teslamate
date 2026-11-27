@@ -431,10 +431,10 @@ defmodule TeslaMate.Vehicles.Vehicle do
                  shift in ~w(D N R) ->
             # Some backends (e.g. HIMA) update their snapshot less often than
             # TeslaMate polls. An unchanged timestamp means no new position:
-            # skip the insert and poll again after the next interval. Gear
-            # changes (P/nil) still fall through so the drive can be closed.
+            # skip the insert and poll again after the normal driving interval.
+            # Gear changes (P/nil) still fall through so the drive can be closed.
             {:keep_state, %{data | last_used: data.deps.clock.utc_now()},
-             [broadcast_fetch(false), schedule_fetch(data)]}
+             [broadcast_fetch(false), schedule_fetch(driving_interval(), data)]}
 
           {%Vehicle{drive_state: %Drive{timestamp: now}},
            %Data{last_response: %Vehicle{drive_state: %Drive{timestamp: last}}}}
