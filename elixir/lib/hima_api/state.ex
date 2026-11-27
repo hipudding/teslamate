@@ -15,7 +15,7 @@ defmodule HimaApi.State do
 
   alias TeslaApi.Vehicle, as: TV
   alias TeslaApi.Vehicle.State.{Charge, Climate, Drive, VehicleConfig, VehicleState}
-  alias HimaApi.Gear
+  alias HimaApi.{ChargeEnergy, Gear}
 
   @km_to_miles 1 / 1.609344
   @charging_statuses [2, 3, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 25]
@@ -45,9 +45,12 @@ defmodule HimaApi.State do
            moving?(vs))
 
     # HIMA 的平均能耗（kWh/100km）用于 TeslaMate 的 cars.efficiency。
-    # 只在车辆上线时由 profile_attributes/update_car 落库。
+    # 只在车辆上线时由 profile_attributes/update_car 落库；同时用于
+    # 充电电量的续航差估算。
+    efficiency = efficiency(vs["avgEgyCnse"])
+
     meta =
-      case efficiency(vs["avgEgyCnse"]) do
+      case efficiency do
         nil -> meta
         efficiency -> %{meta | profile: Map.put(meta.profile || %{}, :efficiency, efficiency)}
       end
@@ -55,7 +58,7 @@ defmodule HimaApi.State do
     %TV{
       meta
       | state: if(online?, do: "online", else: "asleep"),
-        charge_state: charge_state(ch, door, timestamp),
+        charge_state: charge_state(ch, door, timestamp, meta.id, efficiency, charging_state),
         climate_state: climate_state(vs, hv, ch, door, seat, timestamp),
         drive_state: drive_state(vs, loc, timestamp),
         vehicle_config: vehicle_config(meta, vs, door, win, seat),
@@ -65,7 +68,7 @@ defmodule HimaApi.State do
 
   # ---------- charge_state ----------
 
-  defp charge_state(ch, door, timestamp) do
+  defp charge_state(ch, door, timestamp, vehicle_id, efficiency, charging_state) do
     status = charging_status(ch)
     gun = gun_connected?(ch)
     current = first_positive([ch["dcChargeCurrent"], ch["acChargeCurrent"], ch["chargeCurrent"]])
@@ -89,12 +92,13 @@ defmodule HimaApi.State do
     %Charge{
       battery_level: int(ch["soc"]),
       usable_battery_level: int(ch["soc"]),
-      charging_state: charging_state(ch),
+      charging_state: charging_state,
       charger_power: power,
       charger_voltage: voltage,
       charger_actual_current: if(is_number(current) and current > 0, do: current),
       charger_phases: charger_phases(ch),
-      charge_energy_added: nil,
+      charge_energy_added:
+        ChargeEnergy.estimate(vehicle_id, ch, charging_state, efficiency, timestamp),
       charge_rate: nil,
       time_to_full_charge: time_to_full_charge(ch["remainChargeTime"]),
       charge_port_door_open: bool01(door["chargeHood"]),
