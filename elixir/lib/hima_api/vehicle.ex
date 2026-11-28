@@ -40,7 +40,8 @@ defmodule HimaApi.Vehicle do
   def get(%Auth{token: raw}, id) do
     with {:ok, bundle} <- HimaAuth.parse_bundle(raw),
          {:ok, dynamic} <- fetch_dynamic(bundle, id) do
-      {:ok, State.build(vehicle_from_id(bundle, id), dynamic)}
+      vehicle = State.build(vehicle_from_id(bundle, id), dynamic)
+      {:ok, maybe_minimal_asleep(vehicle)}
     else
       {:error, reason} -> normalize_error({:error, reason})
     end
@@ -48,6 +49,20 @@ defmodule HimaApi.Vehicle do
 
   @doc "完整状态查询（TeslaMate 的 vehicle_data）；与 get/2 共用同一快照。"
   def get_with_state(%Auth{} = auth, id), do: get(auth, id)
+
+  # 休眠时 HIMA 的 SoC/续航都是 -1 哨兵。TeslaMate 对特斯拉的休眠响应
+  # 不带 vehicle_data，由 restore_last_known_values/2 从最后位置恢复电量和
+  # 续航；这里返回最小 vehicle，复用同一套逻辑，避免休眠时显示为空。
+  defp maybe_minimal_asleep(%TV{state: "asleep", charge_state: %{} = charge} = vehicle) do
+    if is_nil(charge.battery_level) and is_nil(charge.ideal_battery_range) and
+         is_nil(charge.est_battery_range) and is_nil(charge.battery_range) do
+      %{vehicle | charge_state: nil, drive_state: nil, climate_state: nil, vehicle_state: nil}
+    else
+      vehicle
+    end
+  end
+
+  defp maybe_minimal_asleep(vehicle), do: vehicle
 
   # ---------- 车辆元信息 ----------
 
