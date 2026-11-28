@@ -90,8 +90,8 @@ defmodule HimaApi.State do
       end
 
     %Charge{
-      battery_level: int(ch["soc"]),
-      usable_battery_level: int(ch["soc"]),
+      battery_level: level(ch["soc"]),
+      usable_battery_level: level(ch["soc"]),
       charging_state: charging_state,
       charger_power: power,
       charger_voltage: voltage,
@@ -243,8 +243,14 @@ defmodule HimaApi.State do
 
   defp seat_heat(seat, key) do
     case seat[key] do
-      %{} = status -> int(status["heatStatus"])
-      _ -> nil
+      %{} = status ->
+        case int(status["heatStatus"]) do
+          value when is_integer(value) and value >= 0 -> value
+          _ -> nil
+        end
+
+      _ ->
+        nil
     end
   end
 
@@ -262,7 +268,7 @@ defmodule HimaApi.State do
     %Drive{
       latitude: latitude,
       longitude: longitude,
-      heading: num(loc["direction"]),
+      heading: heading(loc["direction"]),
       speed: miles(vs["speed"]),
       shift_state: Gear.shift(vs["gearSignal"], moving?),
       # HIMA 云端没有实时行车功率，保持 nil（不伪造 0）
@@ -488,6 +494,21 @@ defmodule HimaApi.State do
     end
   end
 
+  # HIMA uses -1 / 65535 as "unknown" sentinels; SoC 0 is valid.
+  defp level(value) do
+    case int(value) do
+      number when is_integer(number) and number >= 0 and number <= 100 -> number
+      _ -> nil
+    end
+  end
+
+  defp heading(value) do
+    case num(value) do
+      number when is_number(number) and number >= 0 and number < 360 -> number
+      _ -> nil
+    end
+  end
+
   defp first_positive(values) do
     Enum.find_value(values, fn value ->
       case num(value) do
@@ -499,24 +520,35 @@ defmodule HimaApi.State do
 
   defp temp(value) do
     case num(value) do
-      value when is_number(value) -> Float.round(value / 10, 1)
-      _ -> nil
+      value when is_number(value) and value not in [-1, 65535] ->
+        Float.round(value / 10, 1)
+
+      _ ->
+        nil
     end
   end
 
   # 设定温度可能是 0.1°C 整数（250）或已换算的 Double（25.0）
   defp set_temp(value) do
     case num(value) do
-      value when is_number(value) and value > 80 -> Float.round(value / 10, 1)
-      value when is_number(value) and value > 0 -> Float.round(value * 1.0, 1)
-      _ -> nil
+      value when is_number(value) and value not in [-1, 65535] and value > 80 and value <= 800 ->
+        Float.round(value / 10, 1)
+
+      value when is_number(value) and value > 0 and value <= 80 ->
+        Float.round(value * 1.0, 1)
+
+      _ ->
+        nil
     end
   end
 
   defp miles(value) do
     case num(value) do
-      value when is_number(value) -> Float.round(value * @km_to_miles, 6)
-      _ -> nil
+      value when is_number(value) and value >= 0 and value != 65535 ->
+        Float.round(value * @km_to_miles, 6)
+
+      _ ->
+        nil
     end
   end
 
